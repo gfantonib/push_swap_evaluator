@@ -1,6 +1,6 @@
 import subprocess
 
-def error_management(program, valgrind, valgrind_check, colours):
+def error_management(program, valgrind, valgrind_check, colours, exit_status):
 
 	# Creating args
 	battery = ["str on list", "dup on list", "max on list", "nothing on list"]
@@ -14,7 +14,6 @@ def error_management(program, valgrind, valgrind_check, colours):
 	stderr_ref_list = ["Error\n", "Error\n", "Error\n", ""]
 
 	# Runing and collecting output and error
-	stdout_list = []
 	stderr_list = []
 	stderr_val_list = []
 	for arg in args:
@@ -30,11 +29,15 @@ def error_management(program, valgrind, valgrind_check, colours):
 	for err, err_val in zip(stderr_list, stderr_val_list):
 		print(f"{battery[i].upper()}")
 		if (err == stderr_ref_list[i]):
-			print(f"{colours[0]}{i + 1}. OK{colours[2]}")
+			print(f"{colours[0]}{i + 1}/{len(args)}.	OK{colours[2]}")
 		else:
-			print(f"{colours[1]}{i + 1}. KO{colours[2]}")
+			print(f"{colours[1]}{i + 1}/{len(args)}.	KO{colours[2]}")
+			exit_status = 1
 		if valgrind_check in err_val:
-			print(f"{colours[0]}   MOK\n{colours[2]}")
+			print(f"{colours[0]}	MOK\n{colours[2]}")
 		else:
-			print(f"{colours[1]}   MKO\n{colours[2]}")
+			print(f"{colours[1]}	MKO\n{colours[2]}")
+			exit_status = 1
 		i = i + 1
+
+	return (exit_status)

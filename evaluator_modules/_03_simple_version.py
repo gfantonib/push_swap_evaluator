@@ -1,6 +1,6 @@
 import subprocess
 
-def	simple_version(program, valgrind, valgrind_check, colours):
+def	simple_version(program, valgrind, valgrind_check, colours, exit_status):
 
 	# Definig args
 	all_tiny_sort_args_checker = ["'1 3 2'", "'2 1 3'", "'2 3 1'", "'3 1 2'", "'3 2 1'"]
@@ -35,11 +35,15 @@ def	simple_version(program, valgrind, valgrind_check, colours):
 		print("--------")
 		print(all_tiny_sort_args_checker[i - 1])
 		if (out_checker == out_ref and int(out_moves) <= max_moves):
-			print(f"{colours[0]}{i}. OK  {colours[2]}")
+			print(f"{colours[0]}{i}/{len(all_tiny_sort_args_checker)}.	OK  {colours[2]}")
 		else:
-			print(f"{colours[1]}{i}. KO  {colours[2]}")
+			print(f"{colours[1]}{i}{len(all_tiny_sort_args_checker)}.	KO  {colours[2]}")
+			exit_status = 1
 		if valgrind_check in out_val:
-			print(f"{colours[0]}   MOK{colours[2]}")
+			print(f"{colours[0]}	MOK{colours[2]}")
 		else:
-			print(f"{colours[1]}   MKO{colours[2]}")
+			print(f"{colours[1]}	MKO{colours[2]}")
+			exit_status = 1
 		i = i + 1
+
+	return (exit_status)
